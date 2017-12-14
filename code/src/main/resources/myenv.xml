@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <system>
+	<app_name>movie</app_name>
 	<!-- 产品代号 -->
 	<productcode>qxs</productcode>
 	<!-- 是否测试模式，测试模式不需要设置ds_info，所有数据库链接都基于db.properties -->
@@ -13,7 +14,7 @@
 	<mc_redis_pool_addr>qiuxs.com:6379</mc_redis_pool_addr>
 	<mc_redis_pool_pass>qiuxs</mc_redis_pool_pass>
 	<!-- 集群 -->
-	<cluster>movie01</cluster>
+	<cluster>hd_2</cluster>
 
 	<!-- 操作员 -->
 	<upyun_operator>qiuxs</upyun_operator>
