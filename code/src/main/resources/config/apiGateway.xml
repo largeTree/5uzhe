@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <apiGateway>
-	<module id="auth">
-		<api id="sm-auth-login" bean="LoginAction" method="login" login="0" auth="0" />
-		<api id="sm-auth-user-check-exists" bean="UserAction" method="checkLoginIdExists" login="0" auth="0" />
-		<api id="sm-auth-user-create" bean="UserAction" method="create" login="0" auth="0" captcha="1" />
-	</module>
-	<module id="biz">
-		<api id="sm-album-create" bean="AlbumAction" method="create" login="1" auth="0" />
-		<api id="sm-album-list-public" bean="AlbumAction" method="publicList" login="0" auth="0" />
-		<api id="sm-album-list-private" bean="AlbumAction" method="privateList" login="1" auth="0" />
-		<api id="sm-album-getById" bean="AlbumAction" method="getById" login="0" auth="0" />
-	</module>
-	<module id="sm-upauth">
-		<api id="sm-get-up-get-policy" bean="UpYunAuthAction" method="getPolicyAndSignature" login="0" auth="0" />
+	<module id="movie">
+		<!-- 电影类别 -->
+		<api id="sm-movie-class-list" bean="MovieClassAction" method="list" login="0" auth="0" />
+		<api id="sm-movie-class-create" bean="MovieClassAction" method="create" login="1" auth="0" />
+		<api id="sm-movie-class-getById" bean="MovieClassAction" method="getById" login="1" auth="0" />
+		<api id="ec-movieClass-codes" bean="MovieClassAction" method="queryServiceCodes" login="0" auth="0" />
+		
+		<!-- 电影 -->
+		<api id="sm-movie-list" bean="MovieAction" method="list" login="0" auth="0" />
+		<api id="sm-movie-create" bean="MovieAction" method="create" login="0" auth="0" />
+		<api id="sm-movie-getById" bean="MovieAction" method="getById" login="0" auth="0" />
+		
+		<api id="sm-test-upload" bean="TestUploadAction" login="0" auth="0" />
 	</module>
 </apiGateway>
