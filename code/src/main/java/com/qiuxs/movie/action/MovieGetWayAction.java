@@ -6,7 +6,7 @@
  * ----------------------------------------------------------------------------------------------
  * 修改原因: 新增
  * 修改人员: qiuxs
- * 修改日期: 2017-12-15
+ * 修改日期: 2017-12-16
  * 修改内容: 
  */
 package com.qiuxs.movie.action;
@@ -23,7 +23,7 @@ import com.qiuxs.frm.action.ActionConstants;
 
 /**
  * 电影获取方式入口
- * @author qiuxs created on 2017-12-15
+ * @author qiuxs created on 2017-12-16
  * @since 
  */
 @Service("MovieGetWayAction")

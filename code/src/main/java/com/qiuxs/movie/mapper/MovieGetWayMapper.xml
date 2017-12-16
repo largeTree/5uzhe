@@ -6,6 +6,7 @@
 	<!-- <cache eviction="LRU" type="com.qiuxs.tech.mybatis.cache.MybatisRedisCache" readOnly="true" /> -->
     <sql id="allFields">
 		`id`,
+		`desc`,
 		`movie_id` as movieId,
 		`type_id` as typeId,
 		`target`,
@@ -18,6 +19,7 @@
     
 	<sql id="insertFields">
 		`id`,
+		`desc`,
 		`movie_id`,
 		`type_id`,
 		`target`,
@@ -32,6 +34,7 @@
 		insert into movie_get_way (<include refid="insertFields"/>)
 		values (
 			#{id},
+			#{desc},
 			#{movieId},
 			#{typeId},
 			#{target},
@@ -48,6 +51,7 @@
 		<foreach collection="list" item="item" index="index" separator=",">
 			(
 				#{item.id},
+				#{item.desc},
 				#{item.movieId},
 				#{item.typeId},
 				#{item.target},
@@ -61,6 +65,9 @@
 	</insert>   		
 	
     <sql id="whereClause">
+		<if test='desc != null and desc != ""'>
+			and `desc` = #{desc}			
+		</if>
 		<if test="movieId != null">
 			and `movie_id` = #{movieId}			
 		</if>
@@ -145,6 +152,9 @@
 	</select>
 	
 	<sql id="setComn">		
+		<if test="desc != null">
+			`desc` = #{desc},
+		</if>
 		<if test="movieId != null">
 			`movie_id` = #{movieId},
 		</if>

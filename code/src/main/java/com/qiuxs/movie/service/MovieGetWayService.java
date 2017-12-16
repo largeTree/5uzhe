@@ -6,30 +6,34 @@
  * ----------------------------------------------------------------------------------------------
  * 修改原因: 新增
  * 修改人员: qiuxs
- * 修改日期: 2017-12-15
+ * 修改日期: 2017-12-16
  * 修改内容: 
  */
 package com.qiuxs.movie.service;
 
-import com.qiuxs.movie.dao.MovieGetWayDao;
-import com.qiuxs.movie.entity.MovieGetWay;
-import com.qiuxs.movie.service.MovieGetWayService;
-import com.qiuxs.bizfdn.frm.bean.ViewProperty;
-import com.qiuxs.bizfdn.frm.bean.BaseField;
-import com.qiuxs.bizfdn.frm.bean.ViewIndex;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import com.qiuxs.bizfdn.frm.bean.BaseField;
+import com.qiuxs.bizfdn.frm.bean.ViewIndex;
+import com.qiuxs.bizfdn.frm.bean.ViewProperty;
+import com.qiuxs.bizfdn.frm.service.AbstractService;
+import com.qiuxs.frm.action.ActionConstants;
+import com.qiuxs.frm.code.cache.CodeTranslatorCenter;
+import com.qiuxs.frm.dao.paging.PageInfo;
 import com.qiuxs.frm.service.filter.IServiceFilter;
 import com.qiuxs.frm.service.impl.IdServiceFilter;
-import org.springframework.stereotype.Service;
-import com.qiuxs.bizfdn.frm.service.AbstractService;
-import com.qiuxs.frm.dao.paging.PageInfo;
-import com.qiuxs.frm.action.ActionConstants;
+import com.qiuxs.movie.dao.MovieGetWayDao;
+import com.qiuxs.movie.entity.MovieGetWay;
+import com.qiuxs.movie.utils.MovieGetWayType;
 
 /**
  * 电影获取方式服务实现类
- * @author qiuxs created on 2017-12-15
+ * @author qiuxs created on 2017-12-16
  * @since 
  */
 @Service("MovieGetWayService")
@@ -100,7 +104,7 @@ public class MovieGetWayService extends AbstractService<Long, MovieGetWay, Movie
 
 	@Override
 	protected String[] collectInputProps() {
-		return new String[] { "id", "movieId", "typeId", "target" };
+		return new String[] { "id", "desc", "movieId", "typeId", "target" };
 	}
 
 	@Override
@@ -120,28 +124,32 @@ public class MovieGetWayService extends AbstractService<Long, MovieGetWay, Movie
 		prop = new ViewProperty<Object>(new BaseField("id", "编号", "Long"), null);
 		props.add(prop);
 
-		prop = new ViewProperty<Long>(new BaseField("movieId", "movieId", "Long"), movieSvc);
+		prop = new ViewProperty<Object>(new BaseField("desc", "描述文字", "String"), null);
 		props.add(prop);
 
-		prop = new ViewProperty<Object>(new BaseField("typeId", "typeId", "Integer"), null);
+		prop = new ViewProperty<Long>(new BaseField("movieId", "电影ID", "Long"), this.movieSvc);
 		props.add(prop);
 
-		prop = new ViewProperty<Object>(new BaseField("target", "target", "String"), null);
+		prop = new ViewProperty<Object>(new BaseField("typeId", "获取方式类型", "Integer"), CodeTranslatorCenter.getCodeContainer(MovieGetWayType.class.getSimpleName()));
 		props.add(prop);
 
-		prop = new ViewProperty<Object>(new BaseField("flag", "flag", "Integer"), null);
+		prop = new ViewProperty<Object>(new BaseField("target", "目标", "String"), null);
 		props.add(prop);
 
-		prop = new ViewProperty<Object>(new BaseField("createdDate", "createdDate", "Date"), null);
+		prop = new ViewProperty<Object>(new BaseField("flag", "状态", "Integer"), null);
 		props.add(prop);
 
-		prop = new ViewProperty<Object>(new BaseField("createdBy", "createdBy", "Long"), null);
+		prop = new ViewProperty<Object>(new BaseField("createdDate", "创建时间", "Date"), null);
 		props.add(prop);
 
-		prop = new ViewProperty<Object>(new BaseField("updatedDate", "updatedDate", "Date"), null);
+		prop = new ViewProperty<Object>(new BaseField("createdBy", "创建人", "Long"), null);
 		props.add(prop);
 
-		prop = new ViewProperty<Object>(new BaseField("updatedBy", "updatedBy", "Long"), null);
+		prop = new ViewProperty<Object>(new BaseField("updatedDate", "更新时间", "Date"), null);
+		props.add(prop);
+
+		prop = new ViewProperty<Object>(new BaseField("updatedBy", "更新人", "Long"), null);
 		props.add(prop);
 	}
+
 }
