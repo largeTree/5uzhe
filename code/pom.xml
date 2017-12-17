@@ -8,7 +8,7 @@
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>smile-movie</artifactId>
+	<artifactId>5uzhe</artifactId>
 	<packaging>war</packaging>
 	<name>Smile-movie-server</name>
 	<url>http://maven.apache.org</url>
@@ -30,6 +30,6 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>smile-movie</finalName>
+		<finalName>5uzhe</finalName>
 	</build>
 </project>
