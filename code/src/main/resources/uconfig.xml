@@ -34,9 +34,9 @@
 	
 	<config domain="taobao" description="淘宝app配置" merge-rule="replace">
 		<default type="properties" location="classpath:config/taobao.properties" />
-		<extends type="properties" location="file:///${user.home}/5uzhe/db.properties" /> <!-- 开发者个人机器的用户目录 -->
-		<extends type="properties" location="file:///mysh/etc/web/5uzhe/db.properties" />
-		<extends type="properties" location="file:///etc/mysh/web/5uzhe/db.properties" />
+		<extends type="properties" location="file:///${user.home}/5uzhe/taobao.properties" /> <!-- 开发者个人机器的用户目录 -->
+		<extends type="properties" location="file:///mysh/etc/web/5uzhe/taobao.properties" />
+		<extends type="properties" location="file:///etc/mysh/web/5uzhe/taobao.properties" />
 	</config>
 
 	<config domain="log4j2" description="日志" merge-rule="lastone">

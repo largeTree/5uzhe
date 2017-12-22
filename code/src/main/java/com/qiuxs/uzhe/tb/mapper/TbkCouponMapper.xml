@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiuxs.uzhe.tb.dao.TbkCouponDao"><!--dsName="" saasAspect=""-->
+	<!-- <cache readOnly="true"/> -->
+	<!-- 启用Redis缓存时去除下方注释 -->
+	<!-- <cache eviction="LRU" type="com.qiuxs.tech.mybatis.cache.MybatisRedisCache" readOnly="true" /> -->
+    <sql id="allFields">
+		`id`,
+		`shop_title` as shopTitle,
+		`user_type` as userType,
+		`title`,
+		`nick`,
+		`seller_id` as sellerId,
+		`volume`,
+		`zk_final_price` as zkFinalPrice,
+		`small_images` as smallImages,
+		`pict_url` as pictUrl,
+		`item_url` as itemUrl,
+		`coupon_total_count` as couponTotalCount,
+		`commission_rate` as commissionRate,
+		`coupon_info` as couponInfo,
+		`category`,
+		`num_iid` as numIid,
+		`coupon_remain_count` as couponRemainCount,
+		`coupon_start_time` as couponStartTime,
+		`coupon_end_time` as couponEndTime,
+		`coupon_click_url` as couponClickUrl,
+		`item_description` as itemDescription
+    </sql>
+    
+	<sql id="insertFields">
+		`id`,
+		`shop_title`,
+		`user_type`,
+		`title`,
+		`nick`,
+		`seller_id`,
+		`volume`,
+		`zk_final_price`,
+		`small_images`,
+		`pict_url`,
+		`item_url`,
+		`coupon_total_count`,
+		`commission_rate`,
+		`coupon_info`,
+		`category`,
+		`num_iid`,
+		`coupon_remain_count`,
+		`coupon_start_time`,
+		`coupon_end_time`,
+		`coupon_click_url`,
+		`item_description`
+    </sql>
+	
+	<insert id="create" parameterType="com.qiuxs.uzhe.tb.entity.TbkCoupon">
+		insert into tbk_coupon (<include refid="insertFields"/>)
+		values (
+			#{id},
+			#{shopTitle},
+			#{userType},
+			#{title},
+			#{nick},
+			#{sellerId},
+			#{volume},
+			#{zkFinalPrice},
+			#{smallImages},
+			#{pictUrl},
+			#{itemUrl},
+			#{couponTotalCount},
+			#{commissionRate},
+			#{couponInfo},
+			#{category},
+			#{numIid},
+			#{couponRemainCount},
+			#{couponStartTime},
+			#{couponEndTime},
+			#{couponClickUrl},
+			#{itemDescription}
+		)
+	</insert>
+	
+	<insert id="createInBatch" parameterType="com.qiuxs.uzhe.tb.entity.TbkCoupon">
+		insert into tbk_coupon (<include refid="insertFields"/>) values 
+		<foreach collection="list" item="item" index="index" separator=",">
+			(
+				#{item.id},
+				#{item.shopTitle},
+				#{item.userType},
+				#{item.title},
+				#{item.nick},
+				#{item.sellerId},
+				#{item.volume},
+				#{item.zkFinalPrice},
+				#{item.smallImages},
+				#{item.pictUrl},
+				#{item.itemUrl},
+				#{item.couponTotalCount},
+				#{item.commissionRate},
+				#{item.couponInfo},
+				#{item.category},
+				#{item.numIid},
+				#{item.couponRemainCount},
+				#{item.couponStartTime},
+				#{item.couponEndTime},
+				#{item.couponClickUrl},
+				#{item.itemDescription}
+			)
+		</foreach>
+	</insert>   		
+	
+    <sql id="whereClause">
+		<if test='shopTitle != null and shopTitle != ""'>
+			and `shop_title` = #{shopTitle}			
+		</if>
+		<if test="userType != null">
+			and `user_type` = #{userType}			
+		</if>
+		<if test='title != null and title != ""'>
+			and `title` = #{title}			
+		</if>
+		<if test='nick != null and nick != ""'>
+			and `nick` = #{nick}			
+		</if>
+		<if test="sellerId != null">
+			and `seller_id` = #{sellerId}			
+		</if>
+		<if test="volume != null">
+			and `volume` = #{volume}			
+		</if>
+		<if test='zkFinalPrice != null and zkFinalPrice != ""'>
+			and `zk_final_price` = #{zkFinalPrice}			
+		</if>
+		<if test='smallImages != null and smallImages != ""'>
+			and `small_images` = #{smallImages}			
+		</if>
+		<if test='pictUrl != null and pictUrl != ""'>
+			and `pict_url` = #{pictUrl}			
+		</if>
+		<if test='itemUrl != null and itemUrl != ""'>
+			and `item_url` = #{itemUrl}			
+		</if>
+		<if test="couponTotalCount != null">
+			and `coupon_total_count` = #{couponTotalCount}			
+		</if>
+		<if test='commissionRate != null and commissionRate != ""'>
+			and `commission_rate` = #{commissionRate}			
+		</if>
+		<if test='couponInfo != null and couponInfo != ""'>
+			and `coupon_info` = #{couponInfo}			
+		</if>
+		<if test="category != null">
+			and `category` = #{category}			
+		</if>
+		<if test="numIid != null">
+			and `num_iid` = #{numIid}			
+		</if>
+		<if test="couponRemainCount != null">
+			and `coupon_remain_count` = #{couponRemainCount}			
+		</if>
+		<if test="couponStartTime != null">
+			and `coupon_start_time` = #{couponStartTime}			
+		</if>
+		<if test="couponEndTime != null">
+			and `coupon_end_time` = #{couponEndTime}			
+		</if>
+		<if test='couponClickUrl != null and couponClickUrl != ""'>
+			and `coupon_click_url` = #{couponClickUrl}			
+		</if>
+		<if test='itemDescription != null and itemDescription != ""'>
+			and `item_description` = #{itemDescription}			
+		</if>
+	</sql>
+	
+	<sql id="bizKeysWhereClause">
+		<if test='itemDescription != null and itemDescription != ""'>
+			item_description = #{itemDescription}
+		</if>
+	</sql>
+    
+	<select id="get" resultType="com.qiuxs.uzhe.tb.entity.TbkCoupon" parameterType="Long" >
+		select <include refid="allFields"/> 
+		  from tbk_coupon 
+		 where id = #{id} 
+	</select>
+	
+	<select id="getByIds" parameterType="List" resultType="com.qiuxs.uzhe.tb.entity.TbkCoupon">
+		select <include refid="allFields"/> from tbk_coupon 
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
+	
+	<select id="getByBizKeys" resultType="com.qiuxs.uzhe.tb.entity.TbkCoupon" parameterType="Map" >
+		select <include refid="allFields"/> 
+		  from tbk_coupon 
+		 <where>
+		    <include refid="bizKeysWhereClause"/>
+		</where>
+	</select>
+		
+	<select id="getAll" resultType="com.qiuxs.uzhe.tb.entity.TbkCoupon">
+		select <include refid="allFields"/> 
+		from tbk_coupon 
+	</select>
+
+	<select id="count" resultType="long">
+		select count(*) from tbk_coupon 
+	</select>
+	
+	<select id="getCountByWhere" parameterType="Map" resultType="Long">
+		select count(*) from tbk_coupon 
+		<where>
+		    <include refid="whereClause"/>
+		</where>
+	</select>
+
+	<select id="findByWhere" parameterType="Map" resultType="com.qiuxs.uzhe.tb.entity.TbkCoupon">
+		select <include refid="allFields"/>
+		from tbk_coupon 
+		<where>
+		    <include refid="whereClause"/>
+		</where>				
+		<if test="orderBy != null">
+			ORDER BY ${orderBy}
+			<if test="orderByDesc != null and orderByDesc == 'true'">
+				desc
+			</if>
+		</if>
+	</select>
+	
+	<sql id="setComn">		
+		<if test="shopTitle != null">
+			`shop_title` = #{shopTitle},
+		</if>
+		<if test="userType != null">
+			`user_type` = #{userType},
+		</if>
+		<if test="title != null">
+			`title` = #{title},
+		</if>
+		<if test="nick != null">
+			`nick` = #{nick},
+		</if>
+		<if test="sellerId != null">
+			`seller_id` = #{sellerId},
+		</if>
+		<if test="volume != null">
+			`volume` = #{volume},
+		</if>
+		<if test="zkFinalPrice != null">
+			`zk_final_price` = #{zkFinalPrice},
+		</if>
+		<if test="smallImages != null">
+			<choose>
+				<when test='smallImages == ""'>
+					`small_images` = null,
+				</when>
+		    	<otherwise>
+					`small_images` = #{smallImages},
+		    	</otherwise>
+	    	</choose>
+    	</if>
+		<if test="pictUrl != null">
+			`pict_url` = #{pictUrl},
+		</if>
+		<if test="itemUrl != null">
+			`item_url` = #{itemUrl},
+		</if>
+		<if test="couponTotalCount != null">
+			`coupon_total_count` = #{couponTotalCount},
+		</if>
+		<if test="commissionRate != null">
+			`commission_rate` = #{commissionRate},
+		</if>
+		<if test="couponInfo != null">
+			`coupon_info` = #{couponInfo},
+		</if>
+		<if test="category != null">
+			`category` = #{category},
+		</if>
+		<if test="numIid != null">
+			`num_iid` = #{numIid},
+		</if>
+		<if test="couponRemainCount != null">
+			`coupon_remain_count` = #{couponRemainCount},
+		</if>
+		<if test="couponStartTime != null">
+			<choose>
+				<when test="couponStartTime.getTime() == 0">
+					`coupon_start_time` = null,
+				</when>
+		    	<otherwise>
+					`coupon_start_time` = #{couponStartTime},
+		    	</otherwise>
+	    	</choose>
+    	</if>
+		<if test="couponEndTime != null">
+			<choose>
+				<when test="couponEndTime.getTime() == 0">
+					`coupon_end_time` = null,
+				</when>
+		    	<otherwise>
+					`coupon_end_time` = #{couponEndTime},
+		    	</otherwise>
+	    	</choose>
+    	</if>
+		<if test="couponClickUrl != null">
+			`coupon_click_url` = #{couponClickUrl},
+		</if>
+		<if test="itemDescription != null">
+			`item_description` = #{itemDescription}
+		</if>
+	</sql>
+	
+	<update id="update" parameterType="com.qiuxs.uzhe.tb.entity.TbkCoupon">
+		 update tbk_coupon 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		  where id = #{id}
+	</update>
+	
+	<update id="updateByMap" parameterType="Map">
+		 update tbk_coupon 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		  where id = #{id}
+	</update>
+	
+	<update id="updateByBizKeys" parameterType="com.qiuxs.uzhe.tb.entity.TbkCoupon">
+		 update tbk_coupon 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		 <where>
+		    <include refid="bizKeysWhereClause"/>
+		</where>
+	</update>		
+	
+	<delete id="delete">
+		delete from tbk_coupon where id = #{id}
+	</delete>
+	
+	<delete id="multiDelete" parameterType="List">
+		delete from tbk_coupon
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteByWhere" parameterType="Map">
+		delete from tbk_coupon 
+		<where>
+		    <include refid="whereClause"/>
+		</where>
+	</delete>	
+	
+	<delete id="deleteByBizKeys" parameterType="Map">
+		delete from tbk_coupon 
+		<where>
+		    <include refid="bizKeysWhereClause"/>
+		</where>
+	</delete>		
+</mapper>    

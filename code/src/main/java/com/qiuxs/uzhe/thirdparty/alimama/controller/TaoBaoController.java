@@ -1,4 +1,4 @@
-package com.qiuxs.uzhe.alimama.controller;
+package com.qiuxs.uzhe.thirdparty.alimama.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

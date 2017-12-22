@@ -2,17 +2,6 @@
 
 <apiGateway>
 	<module id="movie">
-		<!-- 电影类别 -->
-		<api id="sm-movie-class-list" bean="MovieClassAction" method="list" login="0" auth="0" />
-		<api id="sm-movie-class-create" bean="MovieClassAction" method="create" login="1" auth="0" />
-		<api id="sm-movie-class-getById" bean="MovieClassAction" method="getById" login="1" auth="0" />
-		<api id="ec-movieClass-codes" bean="MovieClassAction" method="queryServiceCodes" login="0" auth="0" />
-		
-		<!-- 电影 -->
-		<api id="sm-movie-list" bean="MovieAction" method="list" login="0" auth="0" />
-		<api id="sm-movie-create" bean="MovieAction" method="create" login="0" auth="0" />
-		<api id="sm-movie-getById" bean="MovieAction" method="getById" login="0" auth="0" />
-		
-		<api id="sm-test-upload" bean="TestUploadAction" login="0" auth="0" />
+		<api id="5u-tbk-coupon-list" bean="TbkCouponAction" method="list" login="0" auth="0" />
 	</module>
 </apiGateway>
