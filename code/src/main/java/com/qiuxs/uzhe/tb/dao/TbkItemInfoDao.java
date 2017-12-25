@@ -1,5 +1,5 @@
 /*
- * 文件名称: TbkCouponDao.java
+ * 文件名称: TbkGoodInfoDao.java
  * 版权信息: Copyright 2001-2017 qiuxs Co., LTD. All right reserved.
  * ----------------------------------------------------------------------------------------------
  * 修改历史:
@@ -12,7 +12,7 @@
 package com.qiuxs.uzhe.tb.dao;
 import com.qiuxs.frm.dao.IParentDaoWithBizKeys;
 import com.qiuxs.frm.dao.MyBatisRepository;
-import com.qiuxs.uzhe.tb.entity.TbkCoupon;
+import com.qiuxs.uzhe.tb.entity.TbkItemInfo;
 
 /**
  * 角色表Dao接口类
@@ -21,6 +21,6 @@ import com.qiuxs.uzhe.tb.entity.TbkCoupon;
  * @since 
  */
  @MyBatisRepository
-public interface TbkCouponDao extends IParentDaoWithBizKeys<Long, TbkCoupon> {
+public interface TbkItemInfoDao extends IParentDaoWithBizKeys<Long, TbkItemInfo> {
 
 }

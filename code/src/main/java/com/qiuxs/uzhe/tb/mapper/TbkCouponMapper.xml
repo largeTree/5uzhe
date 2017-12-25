@@ -172,8 +172,8 @@
 	</sql>
 	
 	<sql id="bizKeysWhereClause">
-		<if test='itemDescription != null and itemDescription != ""'>
-			item_description = #{itemDescription}
+		<if test="numIid != null">
+			num_iid = #{numIid}
 		</if>
 	</sql>
     
