@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qiuxs.uzhe.tb.entity.TbkCoupon;
 import com.qiuxs.uzhe.tb.entity.TbkItemInfo;
 import com.taobao.api.ApiException;
@@ -16,8 +17,10 @@ import com.taobao.api.TaobaoResponse;
 import com.taobao.api.domain.NTbkItem;
 import com.taobao.api.request.TbkDgItemCouponGetRequest;
 import com.taobao.api.request.TbkItemInfoGetRequest;
+import com.taobao.api.request.TbkTpwdCreateRequest;
 import com.taobao.api.response.TbkDgItemCouponGetResponse;
 import com.taobao.api.response.TbkItemInfoGetResponse;
+import com.taobao.api.response.TbkTpwdCreateResponse;
 
 /**
  * 淘宝Api调用帮助类
@@ -25,6 +28,33 @@ import com.taobao.api.response.TbkItemInfoGetResponse;
  *
  */
 public class TaoBaoKeApiHelper {
+
+	/**
+	 * 生成淘口令
+	 * @param userId
+	 * 		生成口令的淘宝用户ID
+	 * @param text
+	 * 		口令弹框内容
+	 * @param url
+	 * 		口令跳转目标页
+	 * @param logo
+	 * 		口令弹框logoURL
+	 * @param ext
+	 * 		扩展字段JSON格式
+	 * @return
+	 */
+	public String createTpwd(String userId, String text, String url, String logo, JSONObject ext) {
+		TbkTpwdCreateRequest req = new TbkTpwdCreateRequest();
+		req.setUserId(userId);
+		req.setText(text);
+		req.setUrl(url);
+		req.setLogo(logo);
+		if (ext != null) {
+			req.setExt(ext.toJSONString());
+		}
+		TbkTpwdCreateResponse resp = execute(req);
+		return resp.getData().getModel();
+	}
 
 	/**
 	 * 根据ID获取淘宝客商品详情
@@ -39,7 +69,7 @@ public class TaoBaoKeApiHelper {
 		request.setFields("num_iid,title,pict_url,small_images,reserve_price,zk_final_price,user_type,provcity,item_url,nick,seller_id,volume,cat_leaf_name,cat_name");
 		request.setPlatform(platform);
 		request.setNumIids(ids);
-		TbkItemInfoGetResponse resp = (TbkItemInfoGetResponse) this.execute(request);
+		TbkItemInfoGetResponse resp = this.execute(request);
 		List<NTbkItem> results = resp.getResults();
 		List<TbkItemInfo> beans = transfBeans(results, TbkItemInfo.class);
 		for (TbkItemInfo info : beans) {
@@ -78,10 +108,18 @@ public class TaoBaoKeApiHelper {
 		}
 		req.setPageNo(pageNo);
 		req.setPageSize(pageSize);
-		TbkDgItemCouponGetResponse resp = (TbkDgItemCouponGetResponse) execute(req);
+		TbkDgItemCouponGetResponse resp = execute(req);
 		return transfBeans(resp.getResults(), TbkCoupon.class);
 	}
 
+	/**
+	 * 使用默认构造函数转换bean
+	 * @param src
+	 * 		源bean
+	 * @param clz
+	 * 		目标类
+	 * @return
+	 */
 	private <T> List<T> transfBeans(List<? extends TaobaoObject> src, Class<T> clz) {
 		List<T> newBeans = new ArrayList<T>();
 		for (TaobaoObject bean : src) {
@@ -97,6 +135,11 @@ public class TaoBaoKeApiHelper {
 		return newBeans;
 	}
 
+	/**
+	 * 实例保存器
+	 * @author qiuxs
+	 *
+	 */
 	private static class Holder {
 		private static final DefaultTaobaoClient client;
 		static {
@@ -110,17 +153,28 @@ public class TaoBaoKeApiHelper {
 		}
 	}
 
+	/**
+	 * 私有化构造函数
+	 */
 	private TaoBaoKeApiHelper() {
 	}
 
+	/**
+	 * 获取实例
+	 * @return
+	 */
 	public static TaoBaoKeApiHelper getInstance() {
 		return Holder.helper;
 	}
 
-	private TaobaoResponse execute(BaseTaobaoRequest<? extends TaobaoResponse> req) {
+	/**
+	 * 执行请求
+	 * @param req
+	 * @return
+	 */
+	private <T extends TaobaoResponse> T execute(BaseTaobaoRequest<T> req) {
 		try {
-			TaobaoResponse resp = Holder.client.execute(req);
-			return resp;
+			return Holder.client.execute(req);
 		} catch (ApiException e) {
 			throw new RuntimeException(e);
 		}

@@ -1,4 +1,15 @@
 
+-- 淘口令表
+CREATE TABLE `tbk_coupon_tpwd`(
+	`id` BIGINT(20) PRIMARY KEY,
+	`coupon_id` BIGINT(20) NOT NULL COMMENT'生成淘口令的优惠券ID',
+	`t_pwd` VARCHAR(32) NOT NULL COMMENT'淘口令',
+	`t_pwd_desc` VARCHAR(128) NOT NULL DEFAULT '' COMMENT'默认包装过的淘口令',
+	`created_by` BIGINT(20) NOT NULL DEFAULT 0 COMMENT'创建人',
+	`created_date` DATETIME NOT NULL COMMENT'创建时间',
+	UNIQUE KEY `UK_tbk_coupon_tpwd_coupon_id`(`coupon_id`,`created_by`)
+);
+
 -- 商品详情表
 CREATE TABLE `tbk_item_info`(
 	`id` BIGINT(20) PRIMARY KEY,
@@ -16,7 +27,7 @@ CREATE TABLE `tbk_item_info`(
 	`volume` INT(11) NOT NULL COMMENT'三十天销量',
 	`cat_leaf_name` VARCHAR(16) NOT NULL COMMENT'叶子类目名称',
 	`cat_name` VARCHAR(16) NOT NULL COMMENT'一级类目名称',
-	`platform` TINYINT(2) NOT NULL COMMENT'平台类型，1代表PC端,2代表移动端',
+	`platform` TINYINT(2) NOT NULL COMMENT'平台类型，1代表PC端,2代表移动端'
 );
 
 -- 优惠券表

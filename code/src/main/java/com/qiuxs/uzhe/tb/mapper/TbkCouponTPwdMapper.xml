@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiuxs.uzhe.tb.dao.TbkCouponTPwdDao"><!--dsName="" saasAspect=""-->
+	<!-- <cache readOnly="true"/> -->
+	<!-- 启用Redis缓存时去除下方注释 -->
+	<!-- <cache eviction="LRU" type="com.qiuxs.tech.mybatis.cache.MybatisRedisCache" readOnly="true" /> -->
+    <sql id="allFields">
+		`id`,
+		`coupon_id` as couponId,
+		`t_pwd` as tPwd,
+		`t_pwd_desc` as tPwdDesc,
+		`created_by` as createdBy,
+		`created_date` as createdDate
+    </sql>
+    
+	<sql id="insertFields">
+		`id`,
+		`coupon_id`,
+		`t_pwd`,
+		`t_pwd_desc`,
+		`created_by`,
+		`created_date`
+    </sql>
+	
+	<insert id="create" parameterType="com.qiuxs.uzhe.tb.entity.TbkCouponTPwd">
+		insert into tbk_coupon_tpwd (<include refid="insertFields"/>)
+		values (
+			#{id},
+			#{couponId},
+			#{tPwd},
+			#{tPwdDesc},
+			#{createdBy},
+			#{createdDate}
+		)
+	</insert>
+	
+	<insert id="createInBatch" parameterType="com.qiuxs.uzhe.tb.entity.TbkCouponTPwd">
+		insert into tbk_coupon_tpwd (<include refid="insertFields"/>) values 
+		<foreach collection="list" item="item" index="index" separator=",">
+			(
+				#{item.id},
+				#{item.couponId},
+				#{item.tPwd},
+				#{item.tPwdDesc},
+				#{item.createdBy},
+				#{item.createdDate}
+			)
+		</foreach>
+	</insert>   		
+	
+    <sql id="whereClause">
+		<if test="couponId != null">
+			and `coupon_id` = #{couponId}			
+		</if>
+		<if test='tPwd != null and tPwd != ""'>
+			and `t_pwd` = #{tPwd}			
+		</if>
+		<if test='tPwdDesc != null and tPwdDesc != ""'>
+			and `t_pwd_desc` = #{tPwdDesc}			
+		</if>
+		<if test="createdBy != null">
+			and `created_by` = #{createdBy}			
+		</if>
+		<if test="createdDate != null">
+			and `created_date` &gt;= #{createdDate}
+			<!--and `created_date` &lt;= #{createdDate_fan1} -->
+		</if>
+	</sql>
+	
+	<sql id="bizKeysWhereClause">
+		<if test="couponId != null">
+			coupon_id = #{couponId}
+		</if>
+		<if test="createdBy != null">
+			and created_by = #{createdBy}
+		</if>
+	</sql>
+    
+	<select id="get" resultType="com.qiuxs.uzhe.tb.entity.TbkCouponTPwd" parameterType="Long" >
+		select <include refid="allFields"/> 
+		  from tbk_coupon_tpwd 
+		 where id = #{id} 
+	</select>
+	
+	<select id="getByIds" parameterType="List" resultType="com.qiuxs.uzhe.tb.entity.TbkCouponTPwd">
+		select <include refid="allFields"/> from tbk_coupon_tpwd 
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
+	
+	<select id="getByBizKeys" resultType="com.qiuxs.uzhe.tb.entity.TbkCouponTPwd" parameterType="Map" >
+		select <include refid="allFields"/> 
+		  from tbk_coupon_tpwd 
+		 <where>
+		    <include refid="bizKeysWhereClause"/>
+		</where>
+	</select>
+		
+	<select id="getAll" resultType="com.qiuxs.uzhe.tb.entity.TbkCouponTPwd">
+		select <include refid="allFields"/> 
+		from tbk_coupon_tpwd 
+	</select>
+
+	<select id="count" resultType="long">
+		select count(*) from tbk_coupon_tpwd 
+	</select>
+	
+	<select id="getCountByWhere" parameterType="Map" resultType="Long">
+		select count(*) from tbk_coupon_tpwd 
+		<where>
+		    <include refid="whereClause"/>
+		</where>
+	</select>
+
+	<select id="findByWhere" parameterType="Map" resultType="com.qiuxs.uzhe.tb.entity.TbkCouponTPwd">
+		select <include refid="allFields"/>
+		from tbk_coupon_tpwd 
+		<where>
+		    <include refid="whereClause"/>
+		</where>				
+		<if test="orderBy != null">
+			ORDER BY ${orderBy}
+			<if test="orderByDesc != null and orderByDesc == 'true'">
+				desc
+			</if>
+		</if>
+	</select>
+	
+	<sql id="setComn">		
+		<if test="couponId != null">
+			`coupon_id` = #{couponId},
+		</if>
+		<if test="tPwd != null">
+			`t_pwd` = #{tPwd},
+		</if>
+		<if test="tPwdDesc != null">
+			`t_pwd_desc` = #{tPwdDesc},
+		</if>
+		<if test="createdBy != null">
+			`created_by` = #{createdBy},
+		</if>
+		<if test="createdDate != null">
+			`created_date` = #{createdDate}
+		</if>
+	</sql>
+	
+	<update id="update" parameterType="com.qiuxs.uzhe.tb.entity.TbkCouponTPwd">
+		 update tbk_coupon_tpwd 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		  where id = #{id}
+	</update>
+	
+	<update id="updateByMap" parameterType="Map">
+		 update tbk_coupon_tpwd 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		  where id = #{id}
+	</update>
+	
+	<update id="updateByBizKeys" parameterType="com.qiuxs.uzhe.tb.entity.TbkCouponTPwd">
+		 update tbk_coupon_tpwd 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		 <where>
+		    <include refid="bizKeysWhereClause"/>
+		</where>
+	</update>		
+	
+	<delete id="delete">
+		delete from tbk_coupon_tpwd where id = #{id}
+	</delete>
+	
+	<delete id="multiDelete" parameterType="List">
+		delete from tbk_coupon_tpwd
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteByWhere" parameterType="Map">
+		delete from tbk_coupon_tpwd 
+		<where>
+		    <include refid="whereClause"/>
+		</where>
+	</delete>	
+	
+	<delete id="deleteByBizKeys" parameterType="Map">
+		delete from tbk_coupon_tpwd 
+		<where>
+		    <include refid="bizKeysWhereClause"/>
+		</where>
+	</delete>		
+</mapper>    

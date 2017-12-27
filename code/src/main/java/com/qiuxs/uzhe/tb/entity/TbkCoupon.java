@@ -13,6 +13,7 @@ package com.qiuxs.uzhe.tb.entity;
 
 import java.util.Date;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.qiuxs.fdn.entity.BaseEntity;
 import com.qiuxs.fdn.utils.converter.JsonUtils;
@@ -57,6 +58,7 @@ public class TbkCoupon extends BaseEntity<Long> {
 	/** 商品小图列表 */
 	@JSONField(name = "small_images")
 	private String smallImages;
+	private JSONArray jsmallImages;
 
 	/** 商品主图 */
 	@JSONField(name = "pict_url")
@@ -198,6 +200,21 @@ public class TbkCoupon extends BaseEntity<Long> {
 
 	public void setSmallImages(String smallImages) {
 		this.smallImages = smallImages;
+		this.setJsmallImages(JsonUtils.toJSONArray(smallImages));
+	}
+
+	/**
+	 * @return the jsmallImages
+	 */
+	public JSONArray getJsmallImages() {
+		return jsmallImages;
+	}
+
+	/**
+	 * @param jsmallImages the jsmallImages to set
+	 */
+	public void setJsmallImages(JSONArray jsmallImages) {
+		this.jsmallImages = jsmallImages;
 	}
 
 	public String getPictUrl() {

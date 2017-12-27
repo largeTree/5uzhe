@@ -24,6 +24,7 @@ import com.qiuxs.bizfdn.frm.bean.BaseField;
 import com.qiuxs.bizfdn.frm.bean.ViewIndex;
 import com.qiuxs.bizfdn.frm.bean.ViewProperty;
 import com.qiuxs.bizfdn.frm.service.AbstractService;
+import com.qiuxs.fdn.exception.utils.ExceptionUtil;
 import com.qiuxs.frm.service.filter.IServiceFilter;
 import com.qiuxs.frm.service.impl.IdServiceFilter;
 import com.qiuxs.uzhe.tb.dao.TbkCouponDao;
@@ -54,6 +55,16 @@ public class TbkCouponService extends AbstractService<Long, TbkCoupon, TbkCoupon
 		this.description = "角色表";
 		ViewIndex.putService(VIEW_TBKCOUPON, this);// , ViewIndex.TOPIC_BASE
 	}
+
+	public TbkCoupon getByIdMust(Long pkObj) {
+		TbkCoupon tbkCoupon = super.get(pkObj);
+		if (tbkCoupon == null) {
+			ExceptionUtil.throwLogicalException("utils_data_not_exists");
+		}
+		return tbkCoupon;
+	}
+
+	//====================================== 以下为自动生成代码 ================================================
 
 	@Override
 	public TbkCouponDao getDao() {
