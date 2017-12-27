@@ -17,6 +17,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qiuxs.bizfdn.frm.action.BaseAction;
 import com.qiuxs.fdn.bean.ActionResult;
 import com.qiuxs.fdn.utils.MapUtils;
@@ -52,7 +53,9 @@ public class TbkCouponTPwdAction extends BaseAction<Long, TbkCouponTPwd, TbkCoup
 		// 没有已存在的淘口令时 调用淘宝接口生成淘口令
 		if (tpwd == null) {
 			TbkCoupon tbkCoupon = this.couponSvc.getByIdMust(id);
-			String stpwd = TaoBaoKeApiHelper.getInstance().createTpwd(null, tbkCoupon.getTitle(), tbkCoupon.getCouponClickUrl(), tbkCoupon.getJsmallImages().getString(0), null);
+			JSONObject ext = new JSONObject();
+			ext.put("createdBy", "0");
+			String stpwd = TaoBaoKeApiHelper.getInstance().createTpwd(null, tbkCoupon.getTitle(), tbkCoupon.getCouponClickUrl(), tbkCoupon.getJsmallImages().getString(0), ext);
 			StringBuilder desc = new StringBuilder();
 			desc.append(tbkCoupon.getShopTitle()).append("\n") // 店铺名称
 			.append(tbkCoupon.getTitle()).append("\n") // 商品标题
