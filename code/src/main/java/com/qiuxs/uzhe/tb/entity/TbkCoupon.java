@@ -6,73 +6,77 @@
  * ----------------------------------------------------------------------------------------------
  * 修改原因: 新增
  * 修改人员: qiuxs
- * 修改日期: 2017-12-22
+ * 修改日期: 2017-12-25
  * 修改内容: 
-  */
+ */
 package com.qiuxs.uzhe.tb.entity;
 
 import java.util.Date;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.qiuxs.fdn.entity.BaseEntity;
+import com.qiuxs.fdn.utils.converter.JsonUtils;
+import com.qiuxs.fdn.utils.date.DateFormatUtils;
 
-/** 
+/**
  * 角色表对象类
- * @author qiuxs created on 2017-12-22
+ * @author qiuxs created on 2017-12-25
  * @since
-  */
+ */
 public class TbkCoupon extends BaseEntity<Long> {
 	private static final long serialVersionUID = 1L;
 
-	/**  店铺名称  */
+	/** 商品标题 */
 	@JSONField(name = "shop_title")
 	private String shopTitle;
 
-	/**  卖家类型  */
+	/** 卖家类型，0表示集市，1表示商城 */
 	@JSONField(name = "user_type")
 	private Integer userType;
 
-	/**  商品标题  */
+	/** 商品标题 */
 	@JSONField(name = "title")
 	private String title;
 
-	/**  卖家昵称  */
+	/** 卖家昵称 */
 	@JSONField(name = "nick")
 	private String nick;
 
-	/**  卖家ID  */
+	/** 卖家id */
 	@JSONField(name = "seller_id")
 	private Long sellerId;
 
-	/**  30天销量  */
+	/** 30天销量 */
 	@JSONField(name = "volume")
 	private Long volume;
 
-	/**  折扣价  */
+	/** 折扣价 */
 	@JSONField(name = "zk_final_price")
 	private String zkFinalPrice;
 
-	/**  小图列表  */
+	/** 商品小图列表 */
 	@JSONField(name = "small_images")
 	private String smallImages;
+	private JSONArray jsmallImages;
 
-	/**  商品主图  */
+	/** 商品主图 */
 	@JSONField(name = "pict_url")
 	private String pictUrl;
 
-	/**  商品详情页链接地址  */
+	/** 商品详情页链接地址 */
 	@JSONField(name = "item_url")
 	private String itemUrl;
 
-	/**  优惠券总量 */
+	/** 优惠券总量 */
 	@JSONField(name = "coupon_total_count")
 	private Long couponTotalCount;
 
-	/**  佣金比率(%) */
+	/** 佣金比率(%) */
 	@JSONField(name = "commission_rate")
 	private String commissionRate;
 
-	/**  优惠券面额 */
+	/** 优惠券面额 */
 	@JSONField(name = "coupon_info")
 	private String couponInfo;
 
@@ -103,6 +107,36 @@ public class TbkCoupon extends BaseEntity<Long> {
 	/** 宝贝描述（推荐理由） */
 	@JSONField(name = "item_description")
 	private String itemDescription;
+
+	public TbkCoupon() {
+	}
+
+	/**
+	 * 转换淘宝bean
+	 * @param src
+	 */
+	public TbkCoupon(com.taobao.api.response.TbkDgItemCouponGetResponse.TbkCoupon src) {
+		this.setShopTitle(src.getShopTitle());
+		this.setUserType(src.getUserType().intValue());
+		this.setTitle(src.getTitle());
+		this.setNick(src.getNick());
+		this.setSellerId(src.getSellerId());
+		this.setVolume(src.getVolume());
+		this.setZkFinalPrice(src.getZkFinalPrice());
+		this.setSmallImages(JsonUtils.toJSONString(src.getSmallImages()));
+		this.setPictUrl(src.getPictUrl());
+		this.setItemUrl(src.getItemUrl());
+		this.setCouponTotalCount(src.getCouponTotalCount());
+		this.setCommissionRate(src.getCommissionRate());
+		this.setCouponInfo(src.getCouponInfo());
+		this.setCategory(src.getCategory());
+		this.setNumIid(src.getNumIid());
+		this.setCouponRemainCount(src.getCouponRemainCount());
+		this.setCouponStartTime(DateFormatUtils.parseDate(src.getCouponStartTime()));
+		this.setCouponEndTime(DateFormatUtils.parseDate(src.getCouponEndTime()));
+		this.setCouponClickUrl(src.getCouponClickUrl());
+		this.setItemDescription(src.getItemDescription());
+	}
 
 	public String getShopTitle() {
 		return shopTitle;
@@ -166,6 +200,21 @@ public class TbkCoupon extends BaseEntity<Long> {
 
 	public void setSmallImages(String smallImages) {
 		this.smallImages = smallImages;
+		this.setJsmallImages(JsonUtils.toJSONArray(smallImages));
+	}
+
+	/**
+	 * @return the jsmallImages
+	 */
+	public JSONArray getJsmallImages() {
+		return jsmallImages;
+	}
+
+	/**
+	 * @param jsmallImages the jsmallImages to set
+	 */
+	public void setJsmallImages(JSONArray jsmallImages) {
+		this.jsmallImages = jsmallImages;
 	}
 
 	public String getPictUrl() {

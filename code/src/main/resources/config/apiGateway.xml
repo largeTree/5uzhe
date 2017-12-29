@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <apiGateway>
-	<module id="movie">
+	<module id="tbk">
 		<api id="5u-tbk-coupon-list" bean="TbkCouponAction" method="list" login="0" auth="0" />
+		<api id="5u-tbk-good-getByBizKeys" bean="TbkItemInfoAction" method="getByBizKeys" login="0" auth="0" />
+		<api id="5u-tbk-good-list" bean="TbkItemInfoAction" method="list" login="0" auth="0" />
+		<api id="5u-tbk-tpwd-create-by-coupon" bean="TbkCouponTPwdAction" method="createTpwdByCoupon" login="0" auth="" />
 	</module>
 </apiGateway>

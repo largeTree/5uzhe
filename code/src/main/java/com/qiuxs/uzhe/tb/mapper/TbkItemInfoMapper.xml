@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiuxs.uzhe.tb.dao.TbkItemInfoDao"><!--dsName="" saasAspect=""-->
+	<!-- <cache readOnly="true"/> -->
+	<!-- 启用Redis缓存时去除下方注释 -->
+	<!-- <cache eviction="LRU" type="com.qiuxs.tech.mybatis.cache.MybatisRedisCache" readOnly="true" /> -->
+    <sql id="allFields">
+		`id`,
+		`num_iid` as numIid,
+		`title`,
+		`pict_url` as pictUrl,
+		`small_images` as smallImages,
+		`reserve_price` as reservePrice,
+		`zk_final_price` as zkFinalPrice,
+		`user_type` as userType,
+		`provcity`,
+		`item_url` as itemUrl,
+		`nick`,
+		`seller_id` as sellerId,
+		`volume`,
+		`cat_leaf_name` as catLeafName,
+		`cat_name` as catName,
+		`platform`
+    </sql>
+    
+	<sql id="insertFields">
+		`id`,
+		`num_iid`,
+		`title`,
+		`pict_url`,
+		`small_images`,
+		`reserve_price`,
+		`zk_final_price`,
+		`user_type`,
+		`provcity`,
+		`item_url`,
+		`nick`,
+		`seller_id`,
+		`volume`,
+		`cat_leaf_name`,
+		`cat_name`,
+		`platform`
+    </sql>
+	
+	<insert id="create" parameterType="com.qiuxs.uzhe.tb.entity.TbkItemInfo">
+		insert into tbk_item_info (<include refid="insertFields"/>)
+		values (
+			#{id},
+			#{numIid},
+			#{title},
+			#{pictUrl},
+			#{smallImages},
+			#{reservePrice},
+			#{zkFinalPrice},
+			#{userType},
+			#{provcity},
+			#{itemUrl},
+			#{nick},
+			#{sellerId},
+			#{volume},
+			#{catLeafName},
+			#{catName},
+			#{platform}
+		)
+	</insert>
+	
+	<insert id="createInBatch" parameterType="com.qiuxs.uzhe.tb.entity.TbkItemInfo">
+		insert into tbk_item_info (<include refid="insertFields"/>) values 
+		<foreach collection="list" item="item" index="index" separator=",">
+			(
+				#{item.id},
+				#{item.numIid},
+				#{item.title},
+				#{item.pictUrl},
+				#{item.smallImages},
+				#{item.reservePrice},
+				#{item.zkFinalPrice},
+				#{item.userType},
+				#{item.provcity},
+				#{item.itemUrl},
+				#{item.nick},
+				#{item.sellerId},
+				#{item.volume},
+				#{item.catLeafName},
+				#{item.catName},
+				#{item.platform}
+			)
+		</foreach>
+	</insert>   		
+	
+    <sql id="whereClause">
+		<if test="numIid != null">
+			and `num_iid` = #{numIid}			
+		</if>
+		<if test='title != null and title != ""'>
+			and `title` = #{title}			
+		</if>
+		<if test='pictUrl != null and pictUrl != ""'>
+			and `pict_url` = #{pictUrl}			
+		</if>
+		<if test='smallImages != null and smallImages != ""'>
+			and `small_images` = #{smallImages}			
+		</if>
+		<if test='reservePrice != null and reservePrice != ""'>
+			and `reserve_price` = #{reservePrice}			
+		</if>
+		<if test='zkFinalPrice != null and zkFinalPrice != ""'>
+			and `zk_final_price` = #{zkFinalPrice}			
+		</if>
+		<if test="userType != null">
+			and `user_type` = #{userType}			
+		</if>
+		<if test='provcity != null and provcity != ""'>
+			and `provcity` = #{provcity}			
+		</if>
+		<if test='itemUrl != null and itemUrl != ""'>
+			and `item_url` = #{itemUrl}			
+		</if>
+		<if test='nick != null and nick != ""'>
+			and `nick` = #{nick}			
+		</if>
+		<if test="sellerId != null">
+			and `seller_id` = #{sellerId}			
+		</if>
+		<if test="volume != null">
+			and `volume` = #{volume}			
+		</if>
+		<if test='catLeafName != null and catLeafName != ""'>
+			and `cat_leaf_name` = #{catLeafName}			
+		</if>
+		<if test='catName != null and catName != ""'>
+			and `cat_name` = #{catName}			
+		</if>
+		<if test="platform != null">
+			and `platform` = #{platform}			
+		</if>
+	</sql>
+	
+	<sql id="bizKeysWhereClause">
+		<if test="numIid != null">
+			num_iid = #{numIid}
+		</if>
+		<if test="platform != null">
+			and platform = #{platform}
+		</if>
+	</sql>
+    
+	<select id="get" resultType="com.qiuxs.uzhe.tb.entity.TbkItemInfo" parameterType="Long" >
+		select <include refid="allFields"/> 
+		  from tbk_item_info 
+		 where id = #{id} 
+	</select>
+	
+	<select id="getByIds" parameterType="List" resultType="com.qiuxs.uzhe.tb.entity.TbkItemInfo">
+		select <include refid="allFields"/> from tbk_item_info 
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
+	
+	<select id="getByBizKeys" resultType="com.qiuxs.uzhe.tb.entity.TbkItemInfo" parameterType="Map" >
+		select <include refid="allFields"/> 
+		  from tbk_item_info 
+		 <where>
+		    <include refid="bizKeysWhereClause"/>
+		</where>
+	</select>
+		
+	<select id="getAll" resultType="com.qiuxs.uzhe.tb.entity.TbkItemInfo">
+		select <include refid="allFields"/> 
+		from tbk_item_info 
+	</select>
+
+	<select id="count" resultType="long">
+		select count(*) from tbk_item_info 
+	</select>
+	
+	<select id="getCountByWhere" parameterType="Map" resultType="Long">
+		select count(*) from tbk_item_info 
+		<where>
+		    <include refid="whereClause"/>
+		</where>
+	</select>
+
+	<select id="findByWhere" parameterType="Map" resultType="com.qiuxs.uzhe.tb.entity.TbkItemInfo">
+		select <include refid="allFields"/>
+		from tbk_item_info 
+		<where>
+		    <include refid="whereClause"/>
+		</where>				
+		<if test="orderBy != null">
+			ORDER BY ${orderBy}
+			<if test="orderByDesc != null and orderByDesc == 'true'">
+				desc
+			</if>
+		</if>
+	</select>
+	
+	<sql id="setComn">		
+		<if test="numIid != null">
+			`num_iid` = #{numIid},
+		</if>
+		<if test="title != null">
+			`title` = #{title},
+		</if>
+		<if test="pictUrl != null">
+			`pict_url` = #{pictUrl},
+		</if>
+		<if test="smallImages != null">
+			<choose>
+				<when test='smallImages == ""'>
+					`small_images` = null,
+				</when>
+		    	<otherwise>
+					`small_images` = #{smallImages},
+		    	</otherwise>
+	    	</choose>
+    	</if>
+		<if test="reservePrice != null">
+			`reserve_price` = #{reservePrice},
+		</if>
+		<if test="zkFinalPrice != null">
+			`zk_final_price` = #{zkFinalPrice},
+		</if>
+		<if test="userType != null">
+			`user_type` = #{userType},
+		</if>
+		<if test="provcity != null">
+			`provcity` = #{provcity},
+		</if>
+		<if test="itemUrl != null">
+			`item_url` = #{itemUrl},
+		</if>
+		<if test="nick != null">
+			`nick` = #{nick},
+		</if>
+		<if test="sellerId != null">
+			`seller_id` = #{sellerId},
+		</if>
+		<if test="volume != null">
+			`volume` = #{volume},
+		</if>
+		<if test="catLeafName != null">
+			`cat_leaf_name` = #{catLeafName},
+		</if>
+		<if test="catName != null">
+			`cat_name` = #{catName},
+		</if>
+		<if test="platform != null">
+			`platform` = #{platform}
+		</if>
+	</sql>
+	
+	<update id="update" parameterType="com.qiuxs.uzhe.tb.entity.TbkItemInfo">
+		 update tbk_item_info 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		  where id = #{id}
+	</update>
+	
+	<update id="updateByMap" parameterType="Map">
+		 update tbk_item_info 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		  where id = #{id}
+	</update>
+	
+	<update id="updateByBizKeys" parameterType="com.qiuxs.uzhe.tb.entity.TbkItemInfo">
+		 update tbk_item_info 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		 <where>
+		    <include refid="bizKeysWhereClause"/>
+		</where>
+	</update>		
+	
+	<delete id="delete">
+		delete from tbk_item_info where id = #{id}
+	</delete>
+	
+	<delete id="multiDelete" parameterType="List">
+		delete from tbk_item_info
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteByWhere" parameterType="Map">
+		delete from tbk_item_info 
+		<where>
+		    <include refid="whereClause"/>
+		</where>
+	</delete>	
+	
+	<delete id="deleteByBizKeys" parameterType="Map">
+		delete from tbk_item_info 
+		<where>
+		    <include refid="bizKeysWhereClause"/>
+		</where>
+	</delete>		
+</mapper>    
