@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiuxs.uzhe.tb.dao.TbkHomeSliderDao"><!--dsName="" saasAspect=""-->
+	<!-- <cache readOnly="true"/> -->
+	<!-- 启用Redis缓存时去除下方注释 -->
+	<!-- <cache eviction="LRU" type="com.qiuxs.tech.mybatis.cache.MybatisRedisCache" readOnly="true" /> -->
+    <sql id="allFields">
+		`id`,
+		`img_url` as imgUrl,
+		`click_url` as clickUrl,
+		`flag`,
+		`created_by` as createdBy,
+		`created_date` as createdDate
+    </sql>
+    
+	<sql id="insertFields">
+		`id`,
+		`img_url`,
+		`click_url`,
+		`flag`,
+		`created_by`,
+		`created_date`
+    </sql>
+	
+	<insert id="create" parameterType="com.qiuxs.uzhe.tb.entity.TbkHomeSlider">
+		insert into tbk_home_slider (<include refid="insertFields"/>)
+		values (
+			#{id},
+			#{imgUrl},
+			#{clickUrl},
+			#{flag},
+			#{createdBy},
+			#{createdDate}
+		)
+	</insert>
+	
+	<insert id="createInBatch" parameterType="com.qiuxs.uzhe.tb.entity.TbkHomeSlider">
+		insert into tbk_home_slider (<include refid="insertFields"/>) values 
+		<foreach collection="list" item="item" index="index" separator=",">
+			(
+				#{item.id},
+				#{item.imgUrl},
+				#{item.clickUrl},
+				#{item.flag},
+				#{item.createdBy},
+				#{item.createdDate}
+			)
+		</foreach>
+	</insert>   		
+	
+    <sql id="whereClause">
+		<if test='imgUrl != null and imgUrl != ""'>
+			and `img_url` = #{imgUrl}			
+		</if>
+		<if test='clickUrl != null and clickUrl != ""'>
+			and `click_url` = #{clickUrl}			
+		</if>
+		<if test="flag != null">
+			and `flag` = #{flag}			
+		</if>
+		<if test="flagGte != null">
+			and `flag` &gt;= #{flagGte}
+		</if>
+		<if test="flagGt != null">
+			and `flag` &gt; #{flagGt}
+		</if>
+		<if test="flagLte != null">
+			and `flag` &lt;= #{flagLte}
+		</if>
+		<if test="flagLt != null">
+			and `flag` &lt; #{flagLt}
+		</if>
+		<if test="createdBy != null">
+			and `created_by` = #{createdBy}			
+		</if>
+		<if test="createdDate != null">
+			and `created_date` &gt;= #{createdDate}
+			<!--and `created_date` &lt;= #{createdDate_fan1} -->
+		</if>
+	</sql>
+    
+	<select id="get" resultType="com.qiuxs.uzhe.tb.entity.TbkHomeSlider" parameterType="Long" >
+		select <include refid="allFields"/> 
+		  from tbk_home_slider 
+		 where id = #{id} 
+	</select>
+	
+	<select id="getByIds" parameterType="List" resultType="com.qiuxs.uzhe.tb.entity.TbkHomeSlider">
+		select <include refid="allFields"/> from tbk_home_slider 
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
+		
+	<select id="getAll" resultType="com.qiuxs.uzhe.tb.entity.TbkHomeSlider">
+		select <include refid="allFields"/> 
+		from tbk_home_slider 
+	</select>
+
+	<select id="count" resultType="long">
+		select count(*) from tbk_home_slider 
+	</select>
+	
+	<select id="getCountByWhere" parameterType="Map" resultType="Long">
+		select count(*) from tbk_home_slider 
+		<where>
+		    <include refid="whereClause"/>
+		</where>
+	</select>
+
+	<select id="findByWhere" parameterType="Map" resultType="com.qiuxs.uzhe.tb.entity.TbkHomeSlider">
+		select <include refid="allFields"/>
+		from tbk_home_slider 
+		<where>
+		    <include refid="whereClause"/>
+		</where>				
+		<if test="orderBy != null">
+			ORDER BY ${orderBy}
+			<if test="orderByDesc != null and orderByDesc == 'true'">
+				desc
+			</if>
+		</if>
+	</select>
+	
+	<sql id="setComn">		
+		<if test="imgUrl != null">
+			`img_url` = #{imgUrl},
+		</if>
+		<if test="clickUrl != null">
+			`click_url` = #{clickUrl},
+		</if>
+		<if test="flag != null">
+			`flag` = #{flag},
+		</if>
+		<if test="createdBy != null">
+			`created_by` = #{createdBy},
+		</if>
+		<if test="createdDate != null">
+			`created_date` = #{createdDate}
+		</if>
+	</sql>
+	
+	<update id="update" parameterType="com.qiuxs.uzhe.tb.entity.TbkHomeSlider">
+		 update tbk_home_slider 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		  where id = #{id}
+	</update>
+	
+	<update id="updateByMap" parameterType="Map">
+		 update tbk_home_slider 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		  where id = #{id}
+	</update>
+	
+	
+	<delete id="delete">
+		delete from tbk_home_slider where id = #{id}
+	</delete>
+	
+	<delete id="multiDelete" parameterType="List">
+		delete from tbk_home_slider
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteByWhere" parameterType="Map">
+		delete from tbk_home_slider 
+		<where>
+		    <include refid="whereClause"/>
+		</where>
+	</delete>	
+	
+</mapper>    

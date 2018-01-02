@@ -1,4 +1,14 @@
 
+-- 首页轮播图
+CREATE TABLE `tbk_home_slider`(
+	`id` BIGINT(20) PRIMARY KEY,
+	`img_url` VARCHAR(512) NOT NULL COMMENT'轮播图',
+	`click_url` VARCHAR(512) NOT NULL COMMENT'点击跳转的地址',
+	`flag` TINYINT(4) NOT NULL COMMENT'状态',
+	`created_by` BIGINT(20) NOT NULL COMMENT'创建人',
+	`created_date` DATETIME NOT NULL COMMENT'创建时间'
+);
+
 -- 淘口令表
 CREATE TABLE `tbk_coupon_tpwd`(
 	`id` BIGINT(20) PRIMARY KEY,
