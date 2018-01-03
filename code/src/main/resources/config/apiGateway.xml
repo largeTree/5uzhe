@@ -7,5 +7,6 @@
 		<api id="5u-tbk-good-list" bean="TbkItemInfoAction" method="list" login="0" auth="0" />
 		<api id="5u-tbk-tpwd-create-by-coupon" bean="TbkCouponTPwdAction" method="createTpwdByCoupon" login="0" auth="" />
 		<api id="5u-tbk-home-slider-list" bean="TbkHomeSliderAction" method="list" login="0" auth="0" />
+		<api id="5u-tbk-home-slider-create" bean="TbkHomeSliderAction" method="create" login="0" auth="0" />
 	</module>
 </apiGateway>
