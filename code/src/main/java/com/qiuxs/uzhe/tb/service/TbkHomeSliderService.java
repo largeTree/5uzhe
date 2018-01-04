@@ -11,21 +11,24 @@
  */
 package com.qiuxs.uzhe.tb.service;
 
-import com.qiuxs.uzhe.tb.dao.TbkHomeSliderDao;
-import com.qiuxs.uzhe.tb.entity.TbkHomeSlider;
-import com.qiuxs.uzhe.tb.service.TbkHomeSliderService;
-import com.qiuxs.bizfdn.frm.bean.ViewProperty;
-import com.qiuxs.bizfdn.frm.bean.BaseField;
-import com.qiuxs.bizfdn.frm.bean.ViewIndex;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import com.qiuxs.bizfdn.frm.bean.BaseField;
+import com.qiuxs.bizfdn.frm.bean.ViewIndex;
+import com.qiuxs.bizfdn.frm.bean.ViewProperty;
+import com.qiuxs.bizfdn.frm.service.AbstractService;
+import com.qiuxs.frm.action.ActionConstants;
+import com.qiuxs.frm.code.cache.CodeTranslatorCenter;
+import com.qiuxs.frm.dao.paging.PageInfo;
 import com.qiuxs.frm.service.filter.IServiceFilter;
 import com.qiuxs.frm.service.impl.IdServiceFilter;
-import org.springframework.stereotype.Service;
-import com.qiuxs.bizfdn.frm.service.AbstractService;
-import com.qiuxs.frm.dao.paging.PageInfo;
-import com.qiuxs.frm.action.ActionConstants;
+import com.qiuxs.uzhe.tb.dao.TbkHomeSliderDao;
+import com.qiuxs.uzhe.tb.entity.TbkHomeSlider;
 
 /**
  * 首页轮播图服务实现类
@@ -125,7 +128,7 @@ public class TbkHomeSliderService extends AbstractService<Long, TbkHomeSlider, T
 		prop = new ViewProperty<Object>(new BaseField("clickUrl", "clickUrl", "String"), null);
     	props.add(prop);
         
-		prop = new ViewProperty<Object>(new BaseField("flag", "flag", "Integer"), null);
+		prop = new ViewProperty<Integer>(new BaseField("flag", "flag", "Integer"), CodeTranslatorCenter.CODE_FLAG);
     	props.add(prop);
         
 		prop = new ViewProperty<Object>(new BaseField("createdBy", "createdBy", "Long"), null);

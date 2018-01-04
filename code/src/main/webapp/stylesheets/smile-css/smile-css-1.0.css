@@ -1,0 +1,44 @@
+/* Common */
+
+.text-center {
+    text-align: center;
+}
+
+/* table */
+
+.smile-table {
+    margin: 3px;
+    border: 1px #CCCCCC solid;
+    border-left: 0px;
+    border-top: 0px;
+    border-spacing: 0;
+}
+
+.smile-table td {
+    border-left: 1px solid #CCCCCC;
+    border-top: 1px solid #CCCCCC;
+    padding: 5px;
+}
+
+.smile-table thead {
+    font-weight: 600;
+    background-color: #DBDBDB;
+}
+
+.smile-table thead tr td {
+    text-align: center;
+    word-break: keep-all;
+}
+
+.smile-table thead tr:hover {
+    background-color: #DBDBDB;
+}
+
+.smile-table-fill {
+    margin: 5px auto;
+    width: 98%;
+}
+
+.smile-table-hover tr:hover {
+    background-color: #F5F5F5;
+}

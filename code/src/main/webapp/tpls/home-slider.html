@@ -1,0 +1,25 @@
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <form class="navbar-form navbar-left">
+            <div class="btn-group" role="group" aria-label="...">
+                <button type="button" class="btn btn-info" ng-click="showAddWindow()">新增</button>
+            </div>
+        </form>
+    </div>
+</nav>
+<table class="smile-table smile-table-fill smile-table-hover">
+    <thead>
+        <tr>
+            <td>序号</td>
+            <td>图片链接</td>
+            <td>点击跳转地址</td>
+            <td>状态</td>
+        </tr>
+    </thead>
+    <tr ng-repeat="row in data.rows">
+        <td class="text-center">{{$index+1}}</td>
+        <td>{{row.imgUrl}}</td>
+        <td>{{row.clickUrl}}</td>
+        <td class="text-center">{{row.ecCaption.flag}}</td>
+    </tr>
+</table>

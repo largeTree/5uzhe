@@ -110,7 +110,6 @@ angular.module('5uzhe').factory('CommonSvc', function($rootScope, $q, $modal, $h
         alert: alert0,
         msg: msg0,
         setPagination: setPagination0,
-        checkJcaptcheCode: checkJcaptcheCode0,
-        openSimpleFormModel: openSimpleFormModel0
+        checkJcaptcheCode: checkJcaptcheCode0
     };
 });

@@ -4,11 +4,14 @@ angular.module('5uzhe', ['ngRoute', 'ui.bootstrap', 'ngCookies'])
         'baseUrl': './',
         'defPageSize': '15'
     }).constant('ApiKeyConst', {
-
+        'HomeSliderList':'5u-tbk-home-slider-list'
     }).config(function($routeProvider, $httpProvider) {
         $routeProvider.when('/', {
             templateUrl: 'tpls/entry.html',
             controller: 'EntryController'
+        }).when('/home_slider', {
+            templateUrl: 'tpls/home-slider.html',
+            controller: 'HomeSliderController'
         }).otherwise({
             redirectTo: '/'
         });
