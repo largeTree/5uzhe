@@ -27,6 +27,7 @@ public class TaoBaoConfig {
 	private static final String FORMAT = "format";
 	/** 是否使用简单json格式 */
 	private static final String SIMPLIFY = "simplify";
+	private static final String DEFAULT_ADZONEID = "defaultAdzoneId";
 
 	/** ApiUrl */
 	private String url;
@@ -38,6 +39,8 @@ public class TaoBaoConfig {
 	private String format;
 	/** 是否启用简单格式 */
 	private boolean simplify;
+	/** 默认广告位 */
+	private long adzoneId;
 
 	private static class InstanceHolder {
 		private static final TaoBaoConfig instance = new TaoBaoConfig();
@@ -50,6 +53,7 @@ public class TaoBaoConfig {
 		this.app_secret = config.getString(APP_SECRET);
 		this.format = config.getString(FORMAT, "json");
 		this.simplify = config.getBoolean(SIMPLIFY, true);
+		this.adzoneId = config.getLong(DEFAULT_ADZONEID);
 	}
 
 	/**
@@ -98,6 +102,14 @@ public class TaoBaoConfig {
 	 */
 	public boolean isSimplify() {
 		return this.simplify;
+	}
+
+	/**
+	 * 默认广告位ID
+	 * @return the adzoneId
+	 */
+	public long getAdzoneId() {
+		return adzoneId;
 	}
 
 }
