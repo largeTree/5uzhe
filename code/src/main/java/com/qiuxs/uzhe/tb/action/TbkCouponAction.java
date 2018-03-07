@@ -26,6 +26,7 @@ import com.qiuxs.fdn.utils.MapUtils;
 import com.qiuxs.uzhe.tb.dao.TbkCouponDao;
 import com.qiuxs.uzhe.tb.entity.TbkCoupon;
 import com.qiuxs.uzhe.tb.service.TbkCouponService;
+import com.qiuxs.uzhe.tb.service.TbkItemInfoService;
 import com.qiuxs.uzhe.thirdparty.alimama.TaoBaoConfig;
 import com.qiuxs.uzhe.thirdparty.alimama.TaoBaoConstants;
 import com.qiuxs.uzhe.thirdparty.alimama.TaoBaoKeApiHelper;
@@ -38,10 +39,13 @@ import com.qiuxs.uzhe.thirdparty.alimama.TaoBaoKeApiHelper;
 @Service("TbkCouponAction")
 public class TbkCouponAction extends BaseAction<Long, TbkCoupon, TbkCouponDao, TbkCouponService> {
 
-	private static ExecutorService executor = Executors.newFixedThreadPool(3);
+	private static ExecutorService executor = Executors.newFixedThreadPool(6);
 
 	@Resource
 	private TbkCouponService tbkCouponService;
+
+	@Resource
+	private TbkItemInfoService tbkItemInfoService;
 
 	public ActionResult searchFromAlimama(Map<String, String> params) {
 		String searchToken = MapUtils.getStringValueMust(params, "searchToken");
@@ -51,6 +55,9 @@ public class TbkCouponAction extends BaseAction<Long, TbkCoupon, TbkCouponDao, T
 		List<TbkCoupon> findCoupon = TaoBaoKeApiHelper.getInstance().findCoupon(TaoBaoConfig.getInstance().getAdzoneId(), platform, null, searchToken, pageNo, pageSize);
 		executor.execute(() -> {
 			TbkCouponAction.this.getService().createInBatchIfBizKeyNotExists(findCoupon);
+		});
+		executor.execute(() -> {
+			TbkCouponAction.this.tbkItemInfoService.fetchTbkItemInfoWith(findCoupon);
 		});
 		return new ActionResult(findCoupon);
 	}
