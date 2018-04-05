@@ -11,6 +11,7 @@
  */
 package com.qiuxs.uzhe.tb.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,10 +24,14 @@ import com.qiuxs.bizfdn.frm.bean.BaseField;
 import com.qiuxs.bizfdn.frm.bean.ViewIndex;
 import com.qiuxs.bizfdn.frm.bean.ViewProperty;
 import com.qiuxs.bizfdn.frm.service.AbstractService;
+import com.qiuxs.fdn.utils.ListUtils;
 import com.qiuxs.frm.service.filter.IServiceFilter;
 import com.qiuxs.frm.service.impl.IdServiceFilter;
 import com.qiuxs.uzhe.tb.dao.TbkItemInfoDao;
+import com.qiuxs.uzhe.tb.entity.TbkCoupon;
 import com.qiuxs.uzhe.tb.entity.TbkItemInfo;
+import com.qiuxs.uzhe.thirdparty.alimama.TaoBaoConstants;
+import com.qiuxs.uzhe.thirdparty.alimama.TaoBaoKeApiHelper;
 
 /**
  * 角色表服务实现类
@@ -186,5 +191,43 @@ public class TbkItemInfoService extends AbstractService<Long, TbkItemInfo, TbkIt
 		prop = new ViewProperty<Object>(new BaseField("platform", "platform", "Integer"), null);
 		props.add(prop);
 	}
-	
+
+	/**
+	 * 根据优惠券信息填充商品信息
+	 * @param findCoupon
+	 */
+	@Transactional(rollbackFor = { Exception.class, RuntimeException.class })
+	public void fetchTbkItemInfoWith(List<TbkCoupon> findCoupon) {
+		this.fetchTbkGoodInfos(findCoupon, TaoBaoConstants.PLATFORM_M);
+		this.fetchTbkGoodInfos(findCoupon, TaoBaoConstants.PLATFORM_PC);
+	}
+
+	private void fetchTbkGoodInfos(List<TbkCoupon> coupons, long platform) {
+		List<Long> ids = new ArrayList<Long>();
+		for (TbkCoupon coupon : coupons) {
+			ids.add(coupon.getNumIid());
+			if (ids.size() == 40) {
+				List<TbkItemInfo> tbkItemInfos = TaoBaoKeApiHelper.getInstance().findTbkGoodInfo(platform, ListUtils.listToString(ids));
+				this.createInBatchIfBizKeyNotExists(tbkItemInfos);
+				ids.clear();
+			}
+		}
+		if (ids.size() > 0) {
+			List<TbkItemInfo> tbkItemInfos = TaoBaoKeApiHelper.getInstance().findTbkGoodInfo(platform, ListUtils.listToString(ids));
+			this.createInBatchIfBizKeyNotExists(tbkItemInfos);
+		}
+	}
+
+	@Transactional(rollbackFor = { Exception.class, RuntimeException.class })
+	public void createInBatchIfBizKeyNotExists(List<TbkItemInfo> beans) {
+		if (!ListUtils.isNullOrEmptyList(beans)) {
+			List<TbkItemInfo> tempList = new ArrayList<>();
+			for (TbkItemInfo bean : beans) {
+				if (!this.isExistByBizKeys(bean.getNumIid(), bean.getPlatform())) {
+					tempList.add(bean);
+				}
+			}
+			this.createInBatch(tempList);
+		}
+	}
 }
